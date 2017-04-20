@@ -34,6 +34,8 @@ public abstract interface ApplicationService {
 
     public abstract void createTransactionOnSplitwise(User buyer, User receiver, String caption, Float amount);
 
+    public abstract User getCurrentUser();
+
     //TODO add method signatures for accelerometer and Google maps related functionalities
 
 

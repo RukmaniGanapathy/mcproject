@@ -1,5 +1,8 @@
 package edu.project.mobilecomputing.mc_project.service;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.List;
 
 import edu.project.mobilecomputing.mc_project.model.User;
@@ -8,6 +11,8 @@ import edu.project.mobilecomputing.mc_project.model.User;
  * Created by Rukmani on 4/6/17.
  */
 public class ApplicationServiceImpl implements ApplicationService{
+    FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+
     @Override
     public List<User> getUsers() {
         return null;
@@ -66,5 +71,16 @@ public class ApplicationServiceImpl implements ApplicationService{
     @Override
     public void createTransactionOnSplitwise(User buyer, User receiver, String caption, Float amount) {
 
+    }
+
+    @Override
+    public User getCurrentUser() {
+
+        FirebaseUser fbUser = firebaseAuth.getCurrentUser();
+        User myUser = new User();
+        myUser.setEmail(fbUser.getEmail());
+        myUser.setUserId(fbUser.getUid());
+
+        return myUser;
     }
 }
