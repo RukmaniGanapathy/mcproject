@@ -56,6 +56,7 @@ public class Tab2Fragment extends Fragment {
         Notifications = (ToggleButton)rootView.findViewById(R.id.notification);
 
 //        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        //TODO change this logic to use email or UID instead of name if possible
         User user = service.getMyUser();
         usname = user.getName();
 //        usname = usname.replace("@gmail.com","");
