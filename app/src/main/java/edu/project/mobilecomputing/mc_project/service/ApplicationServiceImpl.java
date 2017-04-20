@@ -11,7 +11,9 @@ import edu.project.mobilecomputing.mc_project.model.User;
  * Created by Rukmani on 4/6/17.
  */
 public class ApplicationServiceImpl implements ApplicationService{
+    public static User myUser = null;
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+
 
     @Override
     public List<User> getUsers() {
@@ -19,6 +21,17 @@ public class ApplicationServiceImpl implements ApplicationService{
     }
 
     @Override
+    public User getMyUser() {
+        return myUser;
+    }
+
+    @Override
+    public void setMyUser(User myUser) {
+        ApplicationServiceImpl.myUser = myUser;
+    }
+
+    @Override
+
     public List<User> getFriends(String userId) {
         return null;
     }

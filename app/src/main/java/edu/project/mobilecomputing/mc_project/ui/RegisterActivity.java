@@ -30,6 +30,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import edu.project.mobilecomputing.mc_project.R;
 import edu.project.mobilecomputing.mc_project.model.User;
+import edu.project.mobilecomputing.mc_project.service.ApplicationService;
+import edu.project.mobilecomputing.mc_project.service.ApplicationServiceImpl;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -38,6 +40,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private FirebaseAuth firebaseAuth;
     ProgressDialog progressDialog;
     private DatabaseReference databaseReference;
+    private User myUser = new User();
+    private final ApplicationService service = new ApplicationServiceImpl();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +137,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         String name =editTextName.getText().toString().trim();
         String email =editTextEmail.getText().toString().trim();
         String psw = editTextPassword.getText().toString().trim();
-        User myUser = new User();
+
         FirebaseUser fbUser = firebaseAuth.getCurrentUser();
         myUser.setUserId(fbUser.getUid());
         myUser.setEmail(fbUser.getEmail());
@@ -141,10 +145,17 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
         databaseReference.child("users").child(fbUser.getUid()).setValue(myUser);
+        databaseReference.child("friends").child(name).setValue("#");
+        service.setMyUser(myUser);
+
+
 
         Toast.makeText(this, "User saved!...", Toast.LENGTH_SHORT).show();
 //
 
     }
-
+//
+//    public static User getMyUser() {
+//        return myUser;
+//    }
 }

@@ -9,6 +9,7 @@ import edu.project.mobilecomputing.mc_project.model.User;
  */
 public abstract interface ApplicationService {
 
+
     public abstract List<User> getUsers();
 
     public abstract List<User> getFriends(String userId);
@@ -35,6 +36,10 @@ public abstract interface ApplicationService {
     public abstract void createTransactionOnSplitwise(User buyer, User receiver, String caption, Float amount);
 
     public abstract User getCurrentUser();
+
+    public abstract User getMyUser();
+
+    public abstract void setMyUser(User myUser);
 
     //TODO add method signatures for accelerometer and Google maps related functionalities
 
