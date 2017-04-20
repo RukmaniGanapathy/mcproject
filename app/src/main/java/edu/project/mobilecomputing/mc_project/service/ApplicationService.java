@@ -7,7 +7,7 @@ import edu.project.mobilecomputing.mc_project.model.User;
 /**
  * Created by Rukmani on 3/30/17.
  */
-public abstract class ApplicationService {
+public abstract interface ApplicationService {
 
     public abstract List<User> getUsers();
 
