@@ -2,9 +2,15 @@ package edu.project.mobilecomputing.mc_project.service;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
+import edu.project.mobilecomputing.mc_project.model.Grocery;
 import edu.project.mobilecomputing.mc_project.model.User;
 
 /**
@@ -13,6 +19,8 @@ import edu.project.mobilecomputing.mc_project.model.User;
 public class ApplicationServiceImpl implements ApplicationService{
     public static User myUser = null;
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference databaseReference = database.getReference();
 
 
     @Override
@@ -48,7 +56,28 @@ public class ApplicationServiceImpl implements ApplicationService{
 
     @Override
     public String getGroceryList(String userId) {
-        return null;
+        database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference();
+        final Grocery[] gList = new Grocery[1];
+        //TODO:
+        userId = getCurrentUser().getUserId();
+
+
+        databaseReference.child("grocery").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
+                for (DataSnapshot child : children){
+                    System.out.println("hello from listener");
+                    gList[0] = child.getValue(Grocery.class);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) { }
+        });
+
+        return "ayse";
     }
 
     @Override

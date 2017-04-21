@@ -29,7 +29,8 @@
         android:id="@+id/bsave"
         android:layout_alignBottom="@+id/etitems"
         android:layout_centerHorizontal="true"
-        android:layout_gravity="center_horizontal" />;
+        android:layout_gravity="center_horizontal" />
+
     <!--android:background="@drawable/apptheme_edit_text_holo_light"-->
     <!--android:layout_below="@+id/editText"-->
         <!--android:layout_toEndOf="@+id/editText" />-->
