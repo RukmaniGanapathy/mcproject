@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:hint="Enter User Id"
+        android:hint="Enter User email id"
         android:layout_marginTop="93dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />

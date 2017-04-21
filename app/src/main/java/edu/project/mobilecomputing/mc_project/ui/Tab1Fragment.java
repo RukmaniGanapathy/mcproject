@@ -43,7 +43,7 @@ public class Tab1Fragment extends Fragment {
         //Starting of Get Grocery List
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference();
-        //TODO:
+
         final String userId = myService.getCurrentUser().getUserId();
 
         databaseReference.child("grocery").child(userId).addValueEventListener(new ValueEventListener() {
