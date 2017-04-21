@@ -1,5 +1,6 @@
 package edu.project.mobilecomputing.mc_project.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
@@ -39,6 +40,7 @@ public class Tab1Fragment extends Fragment {
         View rootView = inflater.inflate(R.layout.tab1, container, false);
         final EditText items = (EditText) rootView.findViewById(R.id.etitems);
         Button save = (Button) rootView.findViewById(R.id.bsave);
+        Button send = (Button) rootView.findViewById(R.id.sendlist);
 
         //Starting of Get Grocery List
         database = FirebaseDatabase.getInstance();
@@ -79,6 +81,25 @@ public class Tab1Fragment extends Fragment {
                 FirebaseUser fbUser = FirebaseAuth.getInstance().getCurrentUser();
                 FirebaseDatabase.getInstance().getReference().child("grocery").child(fbUser.getUid()).setValue(grocery);
 
+            }
+        });
+
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseUser fbUser = FirebaseAuth.getInstance().getCurrentUser();
+                String item = items.getText().toString();
+                item = item.replace('\n', '#');
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("message/rfc822");
+                i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"vishalvaidya07@gmail.com"});
+                i.putExtra(Intent.EXTRA_SUBJECT, "Grocery List");
+                i.putExtra(Intent.EXTRA_TEXT   , item);
+                try {
+                    startActivity(Intent.createChooser(i, "Send mail..."));
+                } catch (android.content.ActivityNotFoundException ex) {
+                    //Toast.makeText(Tab1Fragment.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
