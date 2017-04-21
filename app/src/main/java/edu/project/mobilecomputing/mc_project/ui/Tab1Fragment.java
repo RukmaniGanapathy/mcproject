@@ -8,15 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import edu.project.mobilecomputing.mc_project.R;
 import edu.project.mobilecomputing.mc_project.model.Grocery;
@@ -29,7 +29,7 @@ import static edu.project.mobilecomputing.mc_project.R.id.text;
  * Created by Rukmani on 3/28/17.
  */
 public class Tab1Fragment extends Fragment {
-    ApplicationServiceImpl myService = new ApplicationServiceImpl();
+    ApplicationService myService = new ApplicationServiceImpl();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference databaseReference = database.getReference();
     public String groceryItems= "";
@@ -37,8 +37,6 @@ public class Tab1Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab1, container, false);
-//        ListView textView = (ListView) rootView.findViewById(R.id.listView);
-//        textView.a
         final EditText items = (EditText) rootView.findViewById(R.id.etitems);
         Button save = (Button) rootView.findViewById(R.id.bsave);
 
@@ -46,7 +44,7 @@ public class Tab1Fragment extends Fragment {
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference();
         //TODO:
-        String userId = myService.getCurrentUser().getUserId();
+        final String userId = myService.getCurrentUser().getUserId();
 
         databaseReference.child("grocery").child(userId).addValueEventListener(new ValueEventListener() {
             @Override
@@ -56,8 +54,9 @@ public class Tab1Fragment extends Fragment {
                     if(child.getKey()!= null){
                         if(child.getKey().equals("items")){
                             groceryItems = child.getValue(String.class).toString();
+                            String newText = groceryItems.replace('#','\n');
                             System.out.println(text);
-                            items.setText(groceryItems);
+                            items.setText(newText);
                         }
                     }
                 }
@@ -68,20 +67,18 @@ public class Tab1Fragment extends Fragment {
         });
         //EndOf Get Grocery List
 
-//        String text = "apple#banana, milk";//TODO connect to db and set text from db
-//        String newText = text.replace('#','\n');
-        String newText = "";
-        items.setText(newText);
-
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String item = items.getText().toString();
                 String saveToDb = item.replace('\n', '#');
-                //String[] itemsList = item.split("\n");
+                Grocery grocery = new Grocery();
+                grocery.setItems(saveToDb);
+                grocery.setUserId(userId);
 
-                Toast.makeText(getActivity().getApplicationContext(),saveToDb,Toast.LENGTH_LONG).show();
-                //TODO save items to db
+                FirebaseUser fbUser = FirebaseAuth.getInstance().getCurrentUser();
+                FirebaseDatabase.getInstance().getReference().child("grocery").child(fbUser.getUid()).setValue(grocery);
+
             }
         });
 
