@@ -145,7 +145,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
         databaseReference.child("users").child(fbUser.getUid()).setValue(myUser);
-        databaseReference.child("friends").child(name).setValue("#");
+        String friendkeyemail = fbUser.getEmail();
+        friendkeyemail = friendkeyemail.replace(".","~");
+        friendkeyemail = friendkeyemail.replace("@","%");
+        databaseReference.child("friends").child(friendkeyemail).setValue("#");
         service.setMyUser(myUser);
 
 

@@ -46,7 +46,6 @@ public class Tab2Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab2, container, false);
-        ApplicationService service = new ApplicationServiceImpl();
 //        TextView textView = (TextView) rootView.findViewById(R.id.section_label);
 //        textView.setText("tab2");
 
@@ -55,12 +54,10 @@ public class Tab2Fragment extends Fragment {
         enterfriend = (EditText) rootView.findViewById(R.id.editText);
         Notifications = (ToggleButton)rootView.findViewById(R.id.notification);
 
-//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        //TODO change this logic to use email or UID instead of name if possible
-        User user = service.getMyUser();
-        usname = user.getName();
-//        usname = usname.replace("@gmail.com","");
-        System.out.println("Username"+usname);
+        usname = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        usname = usname.replace(".","~");
+        usname = usname.replace("@","%");
+        System.out.println("Username:"+usname);
         final String REG_TOKEN = "REG_TOKEN";
 
 
@@ -71,7 +68,7 @@ public class Tab2Fragment extends Fragment {
             public void onDataChange(DataSnapshot snapshot) {
 
                 friendlist = snapshot.getValue(String.class);
-                System.out.println(friendlist);
+                System.out.println("FriendList"+friendlist);
             }
             //prints "Do you have data? You'll love Firebase."
 
