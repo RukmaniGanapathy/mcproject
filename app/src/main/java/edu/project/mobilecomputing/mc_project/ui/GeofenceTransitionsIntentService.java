@@ -42,7 +42,7 @@ import java.util.Map;
 
 import edu.project.mobilecomputing.mc_project.R;
 
-import static android.R.id.message;
+//import static android.R.id.message;
 
 /**
  * Listener for geofence transition changes.
@@ -145,10 +145,12 @@ public class GeofenceTransitionsIntentService extends IntentService {
         DatabaseReference databaseReference  = FirebaseDatabase.getInstance().getReference().child("notificationRequests");
 
         String user = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        user = user.replace(".","~");
+        user = user.replace("@","%");
 
         Map notification = new HashMap<>();
         notification.put("username", user);
-        notification.put("message", message);
+        notification.put("message", "");
 
         databaseReference.push().setValue(notification);
         // Create an explicit content Intent that starts the main Activity.

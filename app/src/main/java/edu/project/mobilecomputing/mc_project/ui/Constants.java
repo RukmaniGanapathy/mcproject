@@ -59,7 +59,7 @@ public final class Constants {
 //        SUPERMARKETS.put("Walmart Express - Arizona State University", new LatLng(33.414428, -111.929201));
 //        SUPERMARKETS.put("Walmart Supercenter, Southern", new LatLng(33.393357, -111.928466));
 //        SUPERMARKETS.put("Noble library", new LatLng(33.420132, -111.930642));
-        SUPERMARKETS.put("SF", new LatLng(33.419310, -111.919532));
+        SUPERMARKETS.put("SF", new LatLng(37.621313, -122.378955));
 
 
 

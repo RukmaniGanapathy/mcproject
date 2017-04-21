@@ -85,7 +85,7 @@ public class Tab2Fragment extends Fragment {
             public void onClick(View v) {
                 String recent_token= FirebaseInstanceId.getInstance().getToken();
                 Log.d(REG_TOKEN, recent_token);
-                FirebaseMessaging.getInstance().subscribeToTopic("user_"+enterfriend.getText().toString());
+                FirebaseMessaging.getInstance().subscribeToTopic("user_"+usname);
                 System.out.println("Add friend");
                 String value = friendlist + enterfriend.getText().toString()+"#";
                 myRef.child("friends").child(usname).setValue(value);
@@ -97,7 +97,7 @@ public class Tab2Fragment extends Fragment {
         Delfriend.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                FirebaseMessaging.getInstance().unsubscribeFromTopic("user_"+enterfriend.getText().toString());
+                FirebaseMessaging.getInstance().unsubscribeFromTopic("user_"+usname);
 
                 String deluser = enterfriend.getText().toString();
                 if(!friendlist.contains(deluser))
@@ -117,9 +117,9 @@ public class Tab2Fragment extends Fragment {
         Notifications.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    FirebaseMessaging.getInstance().subscribeToTopic("user_"+enterfriend.getText().toString());
+                    FirebaseMessaging.getInstance().subscribeToTopic("user_"+usname);
                 } else {
-                    FirebaseMessaging.getInstance().unsubscribeFromTopic("user_"+enterfriend.getText().toString());
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic("user_"+usname);
                 }
             }
         });
