@@ -46,4 +46,13 @@
         android:layout_below="@+id/addfriend"
         android:layout_centerHorizontal="true" />
 
+    <Button
+        android:id="@+id/showgroc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show grocery"
+        android:layout_above="@+id/delfriend"
+        android:layout_centerHorizontal="true" />
+
+
 </RelativeLayout>
