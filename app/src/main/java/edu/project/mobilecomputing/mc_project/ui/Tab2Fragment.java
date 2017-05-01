@@ -92,6 +92,8 @@ public class Tab2Fragment extends Fragment {
                 System.out.println("Add friend");
                 String value = friendlist + enterfriend.getText().toString()+"#";
                 myRef.child("friends").child(usname).setValue(value);
+                Toast.makeText(getActivity().getApplicationContext() , "User added in friend list!",
+                        Toast.LENGTH_LONG).show();
 
 
             }
@@ -122,6 +124,8 @@ public class Tab2Fragment extends Fragment {
                 else {
                     friendlist = friendlist.replace(deluser + "#", "");
                     myRef.child("friends").child(usname).setValue(friendlist);
+                    Toast.makeText(getActivity().getApplicationContext() , "User removed from friend list!",
+                            Toast.LENGTH_LONG).show();
                 }
 
             }
