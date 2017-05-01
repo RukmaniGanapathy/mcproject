@@ -55,6 +55,7 @@ public class Tab3Fragment extends Fragment {
         tf1 = (TextView) rootView.findViewById(R.id.youOwe);
         tf1.setTypeface(null, Typeface.BOLD);
         userId = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        final String user = userId;
         userId = userId.replace(".","~");
         userId = userId.replace("@","%");
 //        System.out.println(fbUser.getUid());
@@ -73,7 +74,7 @@ public class Tab3Fragment extends Fragment {
                         int index = child.getValue(String.class).toString().indexOf(userId);
                         if(index!=-1){
                             String temp = child.getValue(String.class).toString().substring(index+userId.length()+1);
-                            temp = temp.substring(0,temp.indexOf("#"));
+                            temp = temp.substring(0,temp.indexOf("#")+1);
                             youOwe+= child.getKey().toString()+"*"+temp;
                         }
                     }
@@ -89,7 +90,7 @@ public class Tab3Fragment extends Fragment {
         viewExpense.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 //                System.out.println("boooooo  "+youAreOwed+" "+youOwe);
-                if(youAreOwed != null) {
+                if(youAreOwed != "") {
                     String[] itemsArray = youAreOwed.split("#");
                     Map<String, Integer> itemsMap = new HashMap<String, Integer>();
                     for (String item : itemsArray) {
@@ -107,9 +108,10 @@ public class Tab3Fragment extends Fragment {
                     for (String key : itemsMap.keySet()) {
                         transactions += key + "\t" + itemsMap.get(key) + "\n";
                     }
-                    tf.setText("The following people owe you \n" + transactions);
+                    tf.setText("The following people owe you ("+user+") \n" + transactions);
                 }
-                if(youOwe != null) {
+                if(youOwe != "") {
+                    System.out.println("booo "+youOwe);
                     String[] itemsArray1 = youOwe.split("#");
                     Map<String, Integer> itemsMap1 = new HashMap<String, Integer>();
                     for (String item : itemsArray1) {
@@ -127,7 +129,7 @@ public class Tab3Fragment extends Fragment {
                     for (String key : itemsMap1.keySet()) {
                         transactions1 += key + "\t" + itemsMap1.get(key) + "\n";
                     }
-                    tf1.setText("You owe the following people \n" + transactions1);
+                    tf1.setText("You ("+user+") owe the following people \n" + transactions1);
                 }
             }
         });
