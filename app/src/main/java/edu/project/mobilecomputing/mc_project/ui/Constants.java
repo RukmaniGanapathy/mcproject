@@ -45,23 +45,28 @@ public final class Constants {
      */
     public static final long GEOFENCE_EXPIRATION_IN_MILLISECONDS =
             GEOFENCE_EXPIRATION_IN_HOURS * 60 * 60 * 1000;
-    public static final float GEOFENCE_RADIUS_IN_METERS = 1609; // 1 mile, 1.6 km
+    public static final float GEOFENCE_RADIUS_IN_METERS = 800; // 1 mile, 1.6 km
 
-    /**
-     * Map for storing information about airports in the San Francisco bay area.
-     */
-    public static final HashMap<String, LatLng> SUPERMARKETS = new HashMap<String, LatLng>();
+    public static HashMap<String, LatLng> SUPERMARKETS = new HashMap<String, LatLng>();
     static {
 
-        //TODO add the location of the place where we'll be recording the video
-//        SUPERMARKETS.put("UPALMS", new LatLng(33.419310, -111.919532));
-//        SUPERMARKETS.put("Walmart Supercenter, Elliot Rd", new LatLng(33.350258, -111.960815));
-//        SUPERMARKETS.put("Walmart Express - Arizona State University", new LatLng(33.414428, -111.929201));
-//        SUPERMARKETS.put("Walmart Supercenter, Southern", new LatLng(33.393357, -111.928466));
-//        SUPERMARKETS.put("Noble library", new LatLng(33.420132, -111.930642));
+        //populate from google maps
+        SUPERMARKETS.put("UPALMS", new LatLng(33.419310, -111.919532));
+        SUPERMARKETS.put("Walmart Supercenter, Elliot Rd", new LatLng(33.350258, -111.960815));
+        SUPERMARKETS.put("Walmart Express - Arizona State University", new LatLng(33.414428, -111.929201));
+        SUPERMARKETS.put("Walmart Supercenter, Southern", new LatLng(33.393357, -111.928466));
+        SUPERMARKETS.put("Noble library", new LatLng(33.420132, -111.930642));
         SUPERMARKETS.put("SF", new LatLng(37.621313, -122.378955));
 
 
 
+    }
+
+    public static HashMap<String, LatLng> getSUPERMARKETS() {
+        return SUPERMARKETS;
+    }
+
+    public static void setSUPERMARKETS(HashMap<String, LatLng> SUPERMARKETS) {
+        Constants.SUPERMARKETS = SUPERMARKETS;
     }
 }

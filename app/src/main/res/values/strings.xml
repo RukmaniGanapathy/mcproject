@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Application_Name</string>
+    <string name="app_name">TO-BUY</string>
     <string name="action_settings">Settings</string>
     <string name="action_logout">Log Out</string>
     <string name="action_deleteaccount">Delete Account</string>

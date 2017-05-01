@@ -59,7 +59,6 @@ public class ApplicationServiceImpl implements ApplicationService{
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference();
         final Grocery[] gList = new Grocery[1];
-        //TODO:
         userId = getCurrentUser().getUserId();
 
 
@@ -86,7 +85,20 @@ public class ApplicationServiceImpl implements ApplicationService{
     }
 
     @Override
-    public String generateMessages(int useCase) {
+    public String generateMessages(int useCase, String user) {
+        String message = "";
+        switch(useCase){
+            case 1://notify user of nearby super market
+                message = "There is a supermarket nearby, would you like to make a detour?";
+                break;
+            case 2://notify friends that user is in super market
+                message = user+" is at";
+                break;
+            case 3:
+                message="wants you to buy some items. Do you want to buy?";
+                break;
+
+        }
         return null;
     }
 

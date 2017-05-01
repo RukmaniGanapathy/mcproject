@@ -22,7 +22,7 @@ public abstract interface ApplicationService {
 
     public abstract void deleteUserAccount(String userId);
 
-    public abstract String generateMessages(int useCase);
+    public abstract String generateMessages(int useCase, String user);
 
     //write the logic to send a particular message to a user
     public abstract void sendMessage(String userId, int useCase);

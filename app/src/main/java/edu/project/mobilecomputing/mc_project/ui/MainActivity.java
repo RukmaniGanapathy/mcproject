@@ -2,6 +2,8 @@ package edu.project.mobilecomputing.mc_project.ui;
 
 import android.Manifest;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -18,11 +20,18 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.awareness.Awareness;
+import com.google.android.gms.awareness.fence.AwarenessFence;
+import com.google.android.gms.awareness.fence.DetectedActivityFence;
+import com.google.android.gms.awareness.fence.FenceState;
+import com.google.android.gms.awareness.fence.FenceUpdateRequest;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -40,6 +49,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.Map;
 
+import edu.project.mobilecomputing.mc_project.BuildConfig;
 import edu.project.mobilecomputing.mc_project.R;
 
 //created by referring to the video - https://youtu.be/00LLd7qr9sA
@@ -66,6 +76,14 @@ public class MainActivity extends AppCompatActivity implements
     private SharedPreferences mSharedPreferences;
     protected GoogleApiClient mGoogleApiClient;
 
+//    private GoogleApiClient mGoogleApiClient;
+    private PendingIntent mPendingIntent;
+    private FenceReceiver mFenceReceiver;
+    TextView txtResult;
+
+    // The intent action which will be fired when your fence is triggered.
+    private final String FENCE_RECEIVER_ACTION = BuildConfig.APPLICATION_ID + "FENCE_RECEIVER_ACTION";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +102,7 @@ public class MainActivity extends AppCompatActivity implements
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+        createFence(DetectedActivityFence.WALKING, "WalkingFence");
         // Empty list for storing geofences.
         mGeofenceList = new ArrayList<Geofence>();
 
@@ -97,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements
         mGeofencesAdded = mSharedPreferences.getBoolean(Constants.GEOFENCES_ADDED_KEY, false);
 
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        populateGeofenceList();
+        populateGeofenceList(true);
 
         buildGoogleApiClient();
 
@@ -132,6 +151,7 @@ public class MainActivity extends AppCompatActivity implements
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+
         if (id == R.id.action_settings) {
             return true;
         }
@@ -205,6 +225,24 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void onConnectionSuspended(int i) {
         System.out.println("Connected to GoogleApiClient suspended");
+        if (!mGoogleApiClient.isConnected()) {
+            Toast.makeText(this, getString(R.string.not_connected), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        try {
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) ==
+                    PackageManager.PERMISSION_GRANTED) {
+                // Remove geofences.
+                LocationServices.GeofencingApi.removeGeofences(
+                        mGoogleApiClient,
+                        // This is the same pending intent that was used in addGeofences().
+                        getGeofencePendingIntent()
+                ).setResultCallback(this); // Result processed in onResult().
+            }
+        } catch (SecurityException securityException) {
+            // Catch exception generated if the app does not use ACCESS_FINE_LOCATION permission.
+            securityException.printStackTrace();
+        }
 
     }
 
@@ -257,34 +295,109 @@ public class MainActivity extends AppCompatActivity implements
         return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    public void populateGeofenceList() {
-    for (Map.Entry<String, LatLng> entry : Constants.SUPERMARKETS.entrySet()) {
+    public void populateGeofenceList(boolean onCreate) {
+        if(!onCreate) {
+            //remove old geofences
+            if (!mGoogleApiClient.isConnected()) {
+                Toast.makeText(this, getString(R.string.not_connected), Toast.LENGTH_SHORT).show();
+                return;
+            }
+            try {
+                if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) ==
+                        PackageManager.PERMISSION_GRANTED) {
+                    // Remove geofences.
+                    LocationServices.GeofencingApi.removeGeofences(
+                            mGoogleApiClient,
+                            // This is the same pending intent that was used in addGeofences().
+                            getGeofencePendingIntent()
+                    ).setResultCallback(this); // Result processed in onResult().
+                }
+            } catch (SecurityException securityException) {
+                // Catch exception generated if the app does not use ACCESS_FINE_LOCATION permission.
+                securityException.printStackTrace();
+            }
+        }
+        //add updated locations to geofence list
+        for (Map.Entry<String, LatLng> entry : Constants.SUPERMARKETS.entrySet()) {
 
-        mGeofenceList.add(new Geofence.Builder()
-                // Set the request ID of the geofence. This is a string to identify this
-                // geofence.
-                .setRequestId(entry.getKey())
+            mGeofenceList.add(new Geofence.Builder()
+                    // Set the request ID of the geofence. This is a string to identify this
+                    // geofence.
+                    .setRequestId(entry.getKey())
 
-                // Set the circular region of this geofence.
-                .setCircularRegion(
-                        entry.getValue().latitude,
-                        entry.getValue().longitude,
-                        Constants.GEOFENCE_RADIUS_IN_METERS
-                )
+                    // Set the circular region of this geofence.
+                    .setCircularRegion(
+                            entry.getValue().latitude,
+                            entry.getValue().longitude,
+                            Constants.GEOFENCE_RADIUS_IN_METERS
+                    )
 
-                // Set the expiration duration of the geofence. This geofence gets automatically
-                // removed after this period of time.
-                .setExpirationDuration(Constants.GEOFENCE_EXPIRATION_IN_MILLISECONDS)
+                    // Set the expiration duration of the geofence. This geofence gets automatically
+                    // removed after this period of time.
+                    .setExpirationDuration(Constants.GEOFENCE_EXPIRATION_IN_MILLISECONDS)
 
-                // Set the transition types of interest. Alerts are only generated for these
-                // transition. We track entry and exit transitions in this sample.
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
-                        Geofence.GEOFENCE_TRANSITION_EXIT)
+                    // Set the transition types of interest. Alerts are only generated for these
+                    // transition. We track entry and exit transitions in this sample.
+                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
+                            Geofence.GEOFENCE_TRANSITION_EXIT)
 
-                // Create the geofence.
-                .build());
+                    // Create the geofence.
+                    .build());
+        }
     }
-}
+
+    @Override
+    public void onDestroy() {
+        try {
+            unregisterReceiver(mFenceReceiver); //Don't forget to unregister the receiver
+            txtResult.setText("destroy triggered...");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        super.onDestroy();
+    }
+
+
+    private void createFence(int detectedActivityFence, final String fenceKey) {
+        AwarenessFence fence = DetectedActivityFence.during(detectedActivityFence);
+        // Register the fence to receive callbacks.
+        try {
+            Awareness.FenceApi.updateFences(
+                    mGoogleApiClient, new FenceUpdateRequest.Builder().addFence(fenceKey, fence, mPendingIntent)
+                            .build()).setResultCallback(new ResultCallback<Status>() {
+                @Override
+                public void onResult(@NonNull Status status) {
+                    if (status.isSuccess()) {
+                        Log.i(getClass().getSimpleName(), "Successfully registered.");
+                        txtResult.setText("registered ayse");
+                    } else {
+                        Log.e(getClass().getSimpleName(), "Could not be registered: " + status);
+                        txtResult.setText("NOT registered ayse");
+                    }
+                }
+            });
+        }catch (Exception ex)
+        {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    public class FenceReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            FenceState fenceState = FenceState.extract(intent);
+            switch (fenceState.getCurrentState()) {
+                case FenceState.TRUE:
+                    txtResult.setText("ayse is walking...fence key =" + fenceState.getFenceKey());
+                    Log.i(fenceState.getFenceKey(), "Active");
+                    break;
+                case FenceState.FALSE:
+                    txtResult.setText("ayse stopped walking... error ...fence key" + fenceState.getFenceKey());
+                    Log.i(fenceState.getFenceKey(), "Not Active");
+                    break;
+            }
+        }
+    }
 
 
     /**

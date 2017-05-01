@@ -49,6 +49,7 @@ public class Tab2Fragment extends Fragment {
 //        TextView textView = (TextView) rootView.findViewById(R.id.section_label);
 //        textView.setText("tab2");
 
+
         Addfriend = (Button) rootView.findViewById(R.id.addfriend);
         Delfriend = (Button) rootView.findViewById(R.id.delfriend);
         enterfriend = (EditText) rootView.findViewById(R.id.editText);
@@ -59,6 +60,8 @@ public class Tab2Fragment extends Fragment {
         usname = usname.replace("@","%");
         System.out.println("Username:"+usname);
         final String REG_TOKEN = "REG_TOKEN";
+        String recent_token= FirebaseInstanceId.getInstance().getToken();
+        System.out.println("tokennnnnnn "+ recent_token);
 
 
 
@@ -83,8 +86,8 @@ public class Tab2Fragment extends Fragment {
 
         Addfriend.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                String recent_token= FirebaseInstanceId.getInstance().getToken();
-                Log.d(REG_TOKEN, recent_token);
+
+//                Log.d(REG_TOKEN, recent_token);
                 FirebaseMessaging.getInstance().subscribeToTopic("user_"+usname);
                 System.out.println("Add friend");
                 String value = friendlist + enterfriend.getText().toString()+"#";
