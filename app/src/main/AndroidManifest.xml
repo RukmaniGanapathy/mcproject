@@ -38,6 +38,10 @@
 
         </activity>
 
+        <activity android:name=".ui.ExpenseActivity">
+
+        </activity>
+
         <service
             android:name=".ui.MyFirebaseMessagingService">
             <intent-filter>

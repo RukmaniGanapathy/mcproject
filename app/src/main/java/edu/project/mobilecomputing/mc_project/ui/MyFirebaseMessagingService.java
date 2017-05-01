@@ -12,7 +12,7 @@ import com.google.firebase.messaging.RemoteMessage;
 import edu.project.mobilecomputing.mc_project.R;
 
 /**
- * Created by shefaliroy on 4/17/17.
+ * Referred from https://www.youtube.com/watch?v=wKwCgabRV2A
  */
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
