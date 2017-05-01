@@ -59,7 +59,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
             LatLng latLng = new LatLng(lat, lng);
             Constants.SUPERMARKETS.put(placeName,latLng);
         }
-        service.sendNotification("New notification",1);
+//        service.sendNotification("New notification",1);
         Log.d("GooglePlacesReadTask", "onPostExecute Exit");
     }
 
