@@ -7,20 +7,50 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
-    <TextView
-        android:id="@+id/section_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
     <Button
-        android:text="Button"
+        android:text="Add Expense"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/section_label"
-        android:layout_toEndOf="@+id/section_label"
         android:layout_marginStart="42dp"
         android:layout_marginTop="57dp"
         android:id="@+id/addexpense" />
 
+    <TextView
+        android:text=""
+        android:padding="2dp"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:paddingTop="2dp"
+        android:layout_width="176dp"
+        android:layout_height="89dp"
+        android:id="@+id/youAreOwed"
+        android:layout_marginTop="50dp"
+        android:layout_below="@+id/addexpense"
+        android:layout_alignStart="@+id/addexpense"
+        android:layout_alignEnd="@+id/viewexpense" />
+
+    <Button
+        android:text="View Expense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/viewexpense"
+        android:layout_alignBaseline="@+id/addexpense"
+        android:layout_alignBottom="@+id/addexpense"
+        android:layout_toEndOf="@+id/addexpense"
+        android:layout_marginStart="34dp" />
+
+    <TextView
+        android:text=""
+        android:padding="2dp"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:paddingTop="2dp"
+        android:layout_width="176dp"
+        android:layout_height="89dp"
+        android:id="@+id/youOwe"
+        android:layout_marginTop="50dp"
+        android:layout_below="@+id/youAreOwed"
+        android:layout_alignStart="@+id/youAreOwed"
+        android:layout_alignEnd="@+id/youAreOwed" />
 
 </RelativeLayout>

@@ -16,7 +16,7 @@ android:paddingTop="@dimen/activity_vertical_margin" tools:context=".ui.ExpenseA
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Friend Name"
+        android:hint="Friend Email"
         android:id="@+id/friendName"
         android:inputType="text"/>
     <EditText

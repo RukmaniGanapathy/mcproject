@@ -56,6 +56,7 @@ import edu.project.mobilecomputing.mc_project.R;
 public class MainActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ResultCallback<Status> {
 
+    //Geofencing referred from Referred from https://github.com/googlesamples/android-play-location/tree/master/Geofencing/
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -152,9 +153,9 @@ public class MainActivity extends AppCompatActivity implements
 
         //noinspection SimplifiableIfStatement
 
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         if (id == R.id.action_deleteaccount) {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -175,7 +176,6 @@ public class MainActivity extends AppCompatActivity implements
 
         if (id == R.id.action_logout) {
             FirebaseAuth.getInstance().signOut();
-            FirebaseUser user =  FirebaseAuth.getInstance().getCurrentUser();
             Intent intent = new Intent(getBaseContext(), LoginActivity.class);
             startActivityForResult(intent, 0);
             Toast.makeText(getApplicationContext(),"Log Out",Toast.LENGTH_LONG).show();

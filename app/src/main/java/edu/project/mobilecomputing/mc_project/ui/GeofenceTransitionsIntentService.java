@@ -54,6 +54,7 @@ import edu.project.mobilecomputing.mc_project.service.ApplicationServiceImpl;
  * as the output.
  */
 public class GeofenceTransitionsIntentService extends IntentService {
+    //Referred from https://github.com/googlesamples/android-play-location/tree/master/Geofencing/
     ApplicationService service;
 
     protected static final String TAG = "GeofenceTransitionsIS";

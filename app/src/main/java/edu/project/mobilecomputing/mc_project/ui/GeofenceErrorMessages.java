@@ -27,6 +27,7 @@ import edu.project.mobilecomputing.mc_project.R;
  * Geofence error codes mapped to error messages.
  */
 public class GeofenceErrorMessages {
+    //Referred from https://github.com/googlesamples/android-play-location/tree/master/Geofencing/
     /**
      * Prevents instantiation.
      */

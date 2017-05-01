@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,8 +39,11 @@ public class ExpenseActivity  extends AppCompatActivity implements View.OnClickL
 
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference();
+        userId = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        userId = userId.replace(".","~");
+        userId = userId.replace("@","%");
 
-        userId = myService.getCurrentUser().getUserId();
+//        userId = myService.getCurrentUser().getUserId();
         editTextFriendName = ((EditText) findViewById(R.id.friendName));
         editTextItemName = ((EditText) findViewById(R.id.itemName));
         editTextAmount = ((EditText) findViewById(R.id.amount));
@@ -79,6 +83,8 @@ public class ExpenseActivity  extends AppCompatActivity implements View.OnClickL
 
     private void AddExpense(){
         String friendName =editTextFriendName.getText().toString().trim();
+        friendName = friendName.replace(".","~");
+        friendName = friendName.replace("@","%");
         String itemName =editTextItemName.getText().toString().trim();
         String amount = editTextAmount.getText().toString().trim();
 

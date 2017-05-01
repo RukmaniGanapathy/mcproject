@@ -24,6 +24,7 @@ import java.util.HashMap;
  * Constants used in this sample.
  */
 public final class Constants {
+    //Referred from https://github.com/googlesamples/android-play-location/tree/master/Geofencing/
 
     private Constants() {
     }
