@@ -90,6 +90,7 @@ public class Tab1Fragment extends Fragment {
                 FirebaseUser fbUser = FirebaseAuth.getInstance().getCurrentUser();
                 String item = items.getText().toString();
                 item = item.replace('\n', '#');
+                //reference: http://stackoverflow.com/questions/2197741/how-can-i-send-emails-from-my-android-application
                 Intent i = new Intent(Intent.ACTION_SEND);
                 i.setType("message/rfc822");
                 i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"mcspring2017@gmail.com"});

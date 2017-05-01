@@ -1,5 +1,6 @@
 package edu.project.mobilecomputing.mc_project.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -34,7 +35,7 @@ public class Tab2Fragment extends Fragment {
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
-    Button Addfriend;
+    Button Addfriend, showgroc;
     Button Delfriend;
     ToggleButton Notifications;
     EditText enterfriend;
@@ -52,6 +53,8 @@ public class Tab2Fragment extends Fragment {
 
         Addfriend = (Button) rootView.findViewById(R.id.addfriend);
         Delfriend = (Button) rootView.findViewById(R.id.delfriend);
+        showgroc = (Button) rootView.findViewById(R.id.showgroc);
+
         enterfriend = (EditText) rootView.findViewById(R.id.editText);
         Notifications = (ToggleButton)rootView.findViewById(R.id.notification);
 
@@ -92,10 +95,22 @@ public class Tab2Fragment extends Fragment {
                 System.out.println("Add friend");
                 String value = friendlist + enterfriend.getText().toString()+"#";
                 myRef.child("friends").child(usname).setValue(value);
+                Toast.makeText(getActivity().getApplicationContext() , "User added in friend list!",
+                        Toast.LENGTH_LONG).show();
 
 
             }
         });
+
+        showgroc.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), MapsActivity.class);
+                startActivity(intent);
+
+
+            }
+        });
+
 
         Delfriend.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -112,6 +127,8 @@ public class Tab2Fragment extends Fragment {
                 else {
                     friendlist = friendlist.replace(deluser + "#", "");
                     myRef.child("friends").child(usname).setValue(friendlist);
+                    Toast.makeText(getActivity().getApplicationContext() , "User removed from friend list!",
+                            Toast.LENGTH_LONG).show();
                 }
 
             }

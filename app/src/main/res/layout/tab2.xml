@@ -20,10 +20,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add Friend"
-        android:layout_marginTop="122dp"
+        android:layout_marginTop="162dp"
+        android:layout_marginStart="36dp"
         android:layout_below="@+id/editText"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="38dp" />
+        android:layout_alignParentStart="true" />
 
     <Button
         android:id="@+id/delfriend"
@@ -40,10 +40,19 @@
         android:id="@+id/notification"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="71dp"
+        android:layout_marginTop="49dp"
         android:textOff="Disable Notification"
         android:textOn="Enable Notification"
         android:layout_below="@+id/addfriend"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/showgroc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="Nearby Grocery Shops" />
+
 
 </RelativeLayout>
