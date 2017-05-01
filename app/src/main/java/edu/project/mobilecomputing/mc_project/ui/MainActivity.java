@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements
 //    private GoogleApiClient mGoogleApiClient;
     private PendingIntent mPendingIntent;
     private FenceReceiver mFenceReceiver;
-    TextView txtResult;
+//    TextView txtResult;
 
     // The intent action which will be fired when your fence is triggered.
     private final String FENCE_RECEIVER_ACTION = BuildConfig.APPLICATION_ID + "FENCE_RECEIVER_ACTION";
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        createFence(DetectedActivityFence.WALKING, "WalkingFence");
+        createFence(DetectedActivityFence.IN_VEHICLE, "InVehicleFence");
         // Empty list for storing geofences.
         mGeofenceList = new ArrayList<Geofence>();
 
@@ -350,7 +350,7 @@ public class MainActivity extends AppCompatActivity implements
     public void onDestroy() {
         try {
             unregisterReceiver(mFenceReceiver); //Don't forget to unregister the receiver
-            txtResult.setText("destroy triggered...");
+//            txtResult.setText("destroy triggered...");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -369,10 +369,11 @@ public class MainActivity extends AppCompatActivity implements
                 public void onResult(@NonNull Status status) {
                     if (status.isSuccess()) {
                         Log.i(getClass().getSimpleName(), "Successfully registered.");
-                        txtResult.setText("registered ayse");
+//                        txtResult.setText("registered ayse");
+                        Toast.makeText(MainActivity.this,"registered",Toast.LENGTH_SHORT).show();
                     } else {
                         Log.e(getClass().getSimpleName(), "Could not be registered: " + status);
-                        txtResult.setText("NOT registered ayse");
+//                        txtResult.setText("NOT registered ayse");
                     }
                 }
             });
@@ -388,11 +389,13 @@ public class MainActivity extends AppCompatActivity implements
             FenceState fenceState = FenceState.extract(intent);
             switch (fenceState.getCurrentState()) {
                 case FenceState.TRUE:
-                    txtResult.setText("ayse is walking...fence key =" + fenceState.getFenceKey());
+//                    txtResult.setText("ayse is walking...fence key =" + fenceState.getFenceKey());
+                    Toast.makeText(MainActivity.this,"Driving detected",Toast.LENGTH_SHORT).show();
                     Log.i(fenceState.getFenceKey(), "Active");
                     break;
                 case FenceState.FALSE:
-                    txtResult.setText("ayse stopped walking... error ...fence key" + fenceState.getFenceKey());
+//                    txtResult.setText("ayse stopped walking... error ...fence key" + fenceState.getFenceKey());
+                    Toast.makeText(MainActivity.this,"Driving stopped",Toast.LENGTH_SHORT).show();
                     Log.i(fenceState.getFenceKey(), "Not Active");
                     break;
             }

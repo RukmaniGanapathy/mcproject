@@ -22,6 +22,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
     GoogleMap mMap;
     String url;
     List<HashMap<String, String>> mainList;
+    GeofenceTransitionsIntentService service = new GeofenceTransitionsIntentService();
 
     @Override
     protected String doInBackground(Object... params) {
@@ -46,6 +47,19 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
         nearbyPlacesList =  dataParser.parse(result);
         ShowNearbyPlaces(nearbyPlacesList);
         mainList=nearbyPlacesList;
+        Constants.SUPERMARKETS.clear();
+        for (int i = 0; i < nearbyPlacesList.size(); i++) {
+            Log.d("onPostExecute", "Entered into showing locations");
+            MarkerOptions markerOptions = new MarkerOptions();
+            HashMap<String, String> googlePlace = nearbyPlacesList.get(i);
+            double lat = Double.parseDouble(googlePlace.get("lat"));
+            double lng = Double.parseDouble(googlePlace.get("lng"));
+            String placeName = googlePlace.get("place_name");
+//            String vicinity = googlePlace.get("vicinity");
+            LatLng latLng = new LatLng(lat, lng);
+            Constants.SUPERMARKETS.put(placeName,latLng);
+        }
+        service.sendNotification("New notification",1);
         Log.d("GooglePlacesReadTask", "onPostExecute Exit");
     }
 
