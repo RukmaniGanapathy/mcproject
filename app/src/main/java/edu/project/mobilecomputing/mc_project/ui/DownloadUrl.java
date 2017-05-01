@@ -10,8 +10,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by navneet on 23/7/16.
+ * Referred from https://www.androidtutorialpoint.com/intermediate/google-maps-search-nearby-displaying-nearby-places-using-google-places-api-google-maps-api-v2/
  */
+
 public class DownloadUrl {
 
     public String readUrl(String strUrl) throws IOException {
