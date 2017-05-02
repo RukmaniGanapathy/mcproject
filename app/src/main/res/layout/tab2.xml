@@ -50,9 +50,11 @@
         android:id="@+id/showgroc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="Nearby Grocery Shops" />
+        android:text="Nearby Grocery Shops"
+        android:layout_above="@+id/delfriend"
+        android:layout_alignEnd="@+id/notification"
+        android:layout_marginBottom="42dp" />
+    <!--android:layout_centerVertical="true"-->
 
 
 </RelativeLayout>
